@@ -15,7 +15,7 @@ A PostgreSQL Docker setup demonstrating **encryption at rest** and **in transit*
 
 1. **Clone the repository**
    ```bash
-   git clone <your-repo-url>
+   git clone https://github.com/Ayaindeed/EncryptMe
    cd EncryptMe
    ```
 
@@ -45,19 +45,12 @@ A PostgreSQL Docker setup demonstrating **encryption at rest** and **in transit*
    docker-compose up -d monitoring
    ```
 
-## 🌐 Access Points
+## Access Points
 
 - **PostgreSQL Database**: `localhost:5432`
 - **pgAdmin Web UI**: http://localhost:8080
 - **Grafana Monitoring**: http://localhost:3000
 
-## 🔑 Credentials
-
-| Service | Username | Password |
-|---------|----------|----------|
-| PostgreSQL | `admin` | `password` |
-| pgAdmin | `admin@example.com` | `admin123` |
-| Grafana | `admin` | `admin123` |
 
 ## Technical Details
 
