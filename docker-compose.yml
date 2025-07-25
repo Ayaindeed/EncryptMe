@@ -1,0 +1,80 @@
+services:
+  db:
+    image: postgres:15
+    container_name: encryptme-db
+    user: postgres
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: encryptme
+      POSTGRES_INITDB_ARGS: "--auth-local=md5 --auth-host=md5"
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      - ./init-scripts:/docker-entrypoint-initdb.d
+      - ./ssl-setup.sh:/docker-entrypoint-initdb.d/01-ssl-setup.sh
+    command: >
+      postgres
+      -c ssl=on
+      -c ssl_cert_file=server.crt
+      -c ssl_key_file=server.key
+      -c ssl_ca_file=ca.crt
+      -c shared_preload_libraries=pgcrypto
+      -c log_statement=all
+      -c log_connections=on
+      -c log_disconnections=on
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d encryptme"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: encryptme-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    ports:
+      - "8080:80"
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # Test client for SSL/non-SSL connections
+  test-client:
+    image: postgres:15
+    container_name: encryptme-client
+    profiles:
+      - testing
+    volumes:
+      - ./test-scripts:/test-scripts
+      - db-data:/shared-data:ro
+    depends_on:
+      db:
+        condition: service_healthy
+    command: tail -f /dev/null
+
+  monitoring:
+    image: grafana/grafana:latest
+    container_name: encryptme-monitoring
+    ports: ["3000:3000"]
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: admin123
+    volumes:
+      - monitoring-data:/var/lib/grafana
+
+volumes:
+  db-data:
+    driver: local
+  pgadmin-data:
+    driver: local
+  monitoring-data:
+    driver: local

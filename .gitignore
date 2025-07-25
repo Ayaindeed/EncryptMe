@@ -1,0 +1,35 @@
+# Docker volumes and data
+db-data/
+pgadmin-data/
+monitoring-data/
+
+# SSL certificates (auto-generated)
+*.crt
+*.key
+*.csr
+*.pem
+
+# Docker logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Backup files
+backups/
+*.sql
+
+# Environment files (if you add them later)
+.env
+.env.local
+
+# Temporary files
+tmp/
+temp/
