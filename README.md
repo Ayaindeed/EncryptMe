@@ -1,4 +1,4 @@
-# EncryptMe: End-to-End Encrypted Database
+# EncryptMe: End-to-End Encrypted Db
 
 A PostgreSQL Docker setup demonstrating **encryption at rest** and **in transit** for secure database operations.
 
@@ -83,14 +83,6 @@ docker exec -it encryptme-db psql -U admin -d encryptme
 - Uses default passwords (change for production)
 - Self-signed certificates (use proper CA for production)
 - Logging enabled for debugging
-
-### For Production
-- [ ] Change all default passwords
-- [ ] Use proper SSL certificates (Let's Encrypt or commercial)
-- [ ] Implement proper backup strategy
-- [ ] Configure firewall rules
-- [ ] Use environment variables for secrets
-- [ ] Enable additional PostgreSQL security features
 
 ## Compliance & Standards
 
